@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>stopWatch</title>
+</head>
+<body>
+	<div id="time">00:00:00:000</div>
+	<div class="">
+		<input type="button" id="start" value="start">
+		<input type="button" id="stop" value="stop">
+		<input type="button" id="reset" value="reset">
+	</div>
+	<script>
+		const timeElement = document.getElementById('time');
+		const start = document.getElementById('start');
+		const stop = document.getElementById('stop');
+		const reset = document.getElementById('reset');
+
+		let elopsed = 0;
+
+		let intervalId = null;
+
+		function updateTime(){
+			const ms = elopsed % 1000;
+			const s = Math.floor(elopsed / 1000);
+			const m = Math.floor(elopsed / (1000*60) % 60);
+			const h = Math.floor(elopsed / (1000*60*60));	
+
+			const msStr = ms.toString().padStart(3,'0');
+			const sStr = s.toString().padStart(2,'0');
+			const mStr = m.toString().padStart(2,'0');
+			const hStr = h.toString().padStart(2,'0');
+
+			// シングルコーテーションではないのだよ 「｀」だよ
+			timeElement.innerHTML = `${hStr}:${mStr}:${sStr}.${msStr}`;
+		}
+
+		start.addEventListener('click',function(e){
+			if (intervalId !== null){return; }
+			let pre = new Date();
+			intervalId = setInterval(function(){
+				const now = new Date();
+				elopsed += now - pre;
+				pre = now;
+				updateTime();
+				// console.log(elopsed);
+			}, 10);
+		});
+
+		stop.addEventListener('click', function(e){
+			clearInterval(intervalId);
+			intervalId = null;
+		});
+
+		reset.addEventListener('click', function(e){
+			elopsed = 0;
+			updateTime();
+		});
+	</script>
+</body>
+</html>

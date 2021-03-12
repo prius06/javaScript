@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>type</title>
+	<style>
+		#characters {
+			font-size: 2rem;
+		}
+
+		#typed {
+			color: red;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="characters">
+		<span id="typed"></span><span id="untyped">HelooWorld</span>
+	</div>
+
+	<div id="result"></div>
+	<script>
+		const typedField = document.getElementById('typed');
+		const untypedField = document.getElementById('untyped');
+
+		let missTypedCount = 0;
+		let successTypeCount = 0;
+
+		let count;
+			 
+
+		const strs = [
+			'helloworld',
+			'mama',
+			'name',
+			'girl',
+			'boy'
+		]
+
+		function randomInt(max) {
+			return Math.floor(Math.random() * Math.floor(max));
+		}
+
+		function nextString() {
+			const idx = randomInt(strs.length);
+			return strs[idx];
+			}
+		
+
+		function updateTextField() {
+			typedField.textContent = typed;
+			untypedField.textContent = untyped;
+		}
+
+		function next(){
+			typed = '';
+			untyped = nextString();
+			updateTextField();
+			let count;
+			 count += 1;
+			if (count = 3){
+				gameEnd();
+		}
+	}
+
+		document.addEventListener('keydown', function (e) {
+			if (e.key !== untyped.substring(0, 1)) { 
+				missTypedCount +=1;
+				return; }
+				successTypeCount += 1;
+			typed += untyped.substring(0, 1);
+			untyped = untyped.substring(1);
+
+			console.log(typed);
+			console.log(untyped);
+
+			updateTextField();
+
+			if (untyped === '') {
+				count += 1;
+				if (count = 3){
+					gameEnd();
+				}
+				next()
+			}
+		});
+
+		next();
+
+		function gameEnd(){
+			result.textContent = `ぜんぶのかず：${missTypedCount+successTypeCount}, じょうずなかず： ${successTypeCount}`
+		}
+	</script>
+</body>
+
+</html>
